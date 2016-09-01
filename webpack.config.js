@@ -1,5 +1,5 @@
 module.exports = {
-  entry:'./src/client.js',
+  entry:'./index.js',
   output: {
     path: './public',
     filename: 'brundle.js'
