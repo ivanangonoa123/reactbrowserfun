@@ -64,25 +64,13 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
+	var _reducers = __webpack_require__(203);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var middleware = [_reduxThunk2.default];
 
-	var ADD_PARTIDO = 'ADD_PARTIDO';
-
-	var initialState = [partidos];
-
-	function partidos(state, action) {
-	  switch (action.type) {
-	    case ADD_PARTIDO:
-	      return;
-	      break;
-	    default:
-
-	  }
-	}
-
-	var store = (0, _redux.createStore)(reducer, _redux.applyMiddleware.apply(undefined, middleware));
+	var store = (0, _redux.createStore)(_reducers.partido, _redux.applyMiddleware.apply(undefined, middleware));
 
 	(0, _reactDom.render)(_react2.default.createElement(
 	  _reactRedux.Provider,
@@ -23219,6 +23207,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _PartidoListContainer = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./PartidoListContainer\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+	var _PartidoListContainer2 = _interopRequireDefault(_PartidoListContainer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23230,13 +23222,31 @@
 	var App = function (_Component) {
 	  _inherits(App, _Component);
 
-	  function App() {
+	  function App(props) {
 	    _classCallCheck(this, App);
 
-	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+	    _this.handleClick = _this.handleClick.bind(_this);
+	    return _this;
 	  }
 
 	  _createClass(App, [{
+	    key: 'setInputValue',
+	    value: function setInputValue(val) {
+	      this.refs.title.value = val;
+	    }
+	  }, {
+	    key: 'getInputvalue',
+	    value: function getInputvalue() {
+	      return this.refs.title.value;
+	    }
+	  }, {
+	    key: 'handleClick',
+	    value: function handleClick() {
+	      this.props.onChange(this.getInputvalue);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -23246,7 +23256,14 @@
 	          'h2',
 	          null,
 	          'Futbol'
-	        )
+	        ),
+	        _react2.default.createElement('input', { type: 'text', size: '45', ref: 'title' }),
+	        _react2.default.createElement(
+	          'button',
+	          { onClick: this.handleClick },
+	          'Add Partido'
+	        ),
+	        _react2.default.createElement(_PartidoListContainer2.default, null)
 	      );
 	    }
 	  }]);
@@ -23255,6 +23272,88 @@
 	}(_react.Component);
 
 	exports.default = App;
+
+/***/ },
+/* 202 */,
+/* 203 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.partido = partido;
+	exports.getPartidos = getPartidos;
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	var ADD_PARTIDO = 'ADD_PARTIDO';
+	var ADD_PLAYER = 'ADD_PLAYER';
+	var CHANGE_STATUS = 'CHANGE_STATUS';
+
+	var initialState = {
+	  partidos: [{
+	    id: 1,
+	    title: "Partido Jueves",
+	    date: "20/10/2016",
+	    total_polla: 800,
+	    players: []
+	  }, {
+	    id: 2,
+	    title: "Partido Viernes",
+	    date: "20/10/2015",
+	    total_polla: 800,
+	    players: []
+	  }],
+
+	  players: [{
+	    playerId: 1,
+	    name: "Pablo"
+	  }],
+
+	  playerEntries: [{
+	    id: 1,
+	    playerId: 1,
+	    gameId: 2,
+	    status: 0
+	  }]
+	};
+
+	function addPartido() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState.partidos : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case ADD_PARTIDO:
+	      return [].concat(_toConsumableArray(state), [{
+	        id: action.id,
+	        title: action.title,
+	        date: action.date
+	      }]);
+	      break;
+	    default:
+	      return state;
+	  }
+	}
+
+	function partido() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case ADD_PARTIDO:
+	      return {
+	        partidos: addPartido(state.partidos, action)
+	      };
+	    default:
+	      return state;
+	  }
+	}
+
+	function getPartidos(state) {
+	  return state.partidos;
+	}
 
 /***/ }
 /******/ ]);
