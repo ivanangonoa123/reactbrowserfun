@@ -1,35 +1,43 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import PartidoListContainer from './PartidoListContainer'
+import AddPartido from '../components/AddPartido'
+import {addPartido} from '../actions'
+import { Col } from 'react-bootstrap';
 
-export default class App extends Component {
-
+class App extends Component {
   constructor(props){
     super(props)
-    this.handleClick = this.handleClick.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
 
-  setInputValue(val){
-    this.refs.title.value = val
-  }
-
-  getInputvalue() {
-    return this.refs.title.value
-  }
-
-  handleClick() {
-    this.props.onChange(this.getInputvalue)
+  handleFormSubmit(values) {
+   this.props.storeAddPartido(...values)
   }
 
   render() {
     return (
-      <div>
+      <Col xs={4} md={8} lg={4} lgOffset={6} mdOffset={6}>
       <h2>Futbol</h2>
-
-      <input type="text" size="45" ref="title"/>
-      <button onClick={this.handleClick}>Add Partido</button>
-
-      <PartidoListContainer />
-      </div>
+        <AddPartido onFormSubmit={this.handleFormSubmit}/>
+        <PartidoListContainer />
+      </Col>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    storeAddPartido:(title, date, polla) => {
+      dispatch(addPartido(title, date, polla))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

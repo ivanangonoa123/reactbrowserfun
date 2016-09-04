@@ -1,6 +1,4 @@
-
-
-let nextPartidoId = 3
+ let nextPartidoId = 3
 
 export const addPartido = (title, date, polla) => {
   console.log(nextPartidoId)

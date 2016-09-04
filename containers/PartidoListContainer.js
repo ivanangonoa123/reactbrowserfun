@@ -7,19 +7,7 @@ class PartidoListContainer extends Component {
   render() {
     const {partidos} = this.props
     return (
-      <div>
-        <form onSubmit={e => {
-          e.preventDefault()
-        }}>
-
-        </form>
-
-
-        <button onclick={}>
-
-        </button>
-      </div>
-      <PartidoList partidos={partidos}>
+       <PartidoList partidos={partidos}>
       </PartidoList>
     )
   }

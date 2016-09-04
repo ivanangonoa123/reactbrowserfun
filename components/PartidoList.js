@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { Link } from 'react-router'
 
 export default class PartidoList extends Component {
   render() {
@@ -9,8 +10,8 @@ export default class PartidoList extends Component {
     const nodes = !hasPartidos ?
     <em>No partidos!</em> :
     partidos.map( partido =>
-      <div key={partido.id}>      
-      <h3>{partido.title}</h3>
+      <div key={partido.id}>
+      <Link  to={`/partido/${partido.id}`}>{partido.title}</Link>
       <p>{partido.date}</p>
       </div>
     )
