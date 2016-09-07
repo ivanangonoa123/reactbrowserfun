@@ -9,9 +9,9 @@ export default class PartidoList extends Component {
 
     const nodes = !hasPartidos ?
     <em>No partidos!</em> :
-    partidos.map( partido =>
-      <div key={partido.id}>
-      <Link  to={`/partido/${partido.id}`}>{partido.title}</Link>
+    partidos.map( partido => 
+      <div key={partido._id}>
+      <Link to={`/partido/${partido._id}`}>{partido.title}</Link>
       <p>{partido.date}</p>
       </div>
     )

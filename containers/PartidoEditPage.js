@@ -17,6 +17,9 @@ class PartidoEditPage  extends Component {
       <div>
       <h3>{partido.title}</h3>
       <p>{partido.date}</p>
+
+      <p>{partido.polla_partido}</p>
+      <p>{partido.polla_asado}</p>
       </div>
     )
   }

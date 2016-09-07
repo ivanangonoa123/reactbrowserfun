@@ -1,57 +1,50 @@
 import { combineReducers } from 'redux'
 
-const ADD_PARTIDO = 'ADD_PARTIDO';
-const ADD_PLAYER = 'ADD_PLAYER';
-const CHANGE_STATUS = 'CHANGE_STATUS';
+import {
+  ADD_PARTIDO, REQUEST_PARTIDOS, RECEIVE_PARTIDOS
+} from '../actions'
+
+const STATUS_PENDING = 0;
+const STATUS_IN = 1;
+const STATUS_BENCH = 2;
 
 const initialState = {
-  partidoIds: [1,2],
+
 
   partidos: {
+    isFetching: false,
+    didInvalidate: false,
+    ids:[],
+    items: {}
+  },
+
+  players: {
     1:{
       id: 1,
-      title: "Partido Jueves",
-      date: "20/10/2016",
-      total_polla: 800,
-      players: []
-    },
-    2: {
-      id: 2,
-      title: "Partido Viernes",
-      date: "20/10/2015",
-      total_polla: 800,
-      players: []
+      name: "Pablo",
     }
   },
 
-  players: [
-   1:{
-     id: 1,
-     name: "Pablo",
-   }
- ],
-
-  playerEntries: [
+  playerEntries: {
     1: {
       id: 1,
       playerId:1,
       gameId: 2,
-      status: 0
+      status: STATUS_IN,
+      asado: 0
     }
-  ]
+  }
 };
 
-function partidoById(state = initialState.partidos, action) {
+function partidoApp(state = initialState, action) {
   switch (action.type) {
-    case ADD_PARTIDO:
+    case REQUEST_PARTIDOS:
     return Object.assign({}, state, {
-      [action.data.id]: {
-        id: action.data.id,
-        title: action.data.title,
-        date: action.data.date,
-        total_polla: action.data.total_polla,
-        players: []
-      }
+      partidos: partidos(state.partidos, action)
+    })
+    case RECEIVE_PARTIDOS:
+    return Object.assign({}, state, {
+      partidos: partidos(state.partidos, action)
     })
     break;
     default:
@@ -59,25 +52,78 @@ function partidoById(state = initialState.partidos, action) {
   }
 }
 
-function partidoIds(state=initialState.partidoIds, action) {
+function partidos(state = {
+  isFetching: false,
+  didInvalidate: false,
+  items: {}
+}, action) {
   switch (action.type) {
-      case ADD_PARTIDO:
-      return [ ...state, action.data.id]
-      break
-    default:
-      return state
-  }
-}
+    case REQUEST_PARTIDOS:
+    return Object.assign({}, state,
+      {
+        isFetching: true,
+        didInvalidate: false
+      })
+      case RECEIVE_PARTIDOS:
+      return Object.assign({}, state,
+        {
+          isFetching: false,
+          didInvalidate: false,
+          ids:action.ids,
+          items: action.partidos,
+          lastUpdated: action.receivedAt
+        })
+        default:
+        return state
+      }
+    }
 
-export default combineReducers({
-  partidoById,
-  partidoIds
-})
+    export default combineReducers({
+      partidoApp
+    })
 
-export function getPartidos(state) {
-  return state.partidoIds.map(id=> getPartido(state, id))
-}
+    /*function partidoById(state = {  isFetching: false,
+      didInvalidate: false,
+      items:{}
+    }, action) {
+      switch (action.type) {
+        case ADD_PARTIDO:
+        return Object.assign({}, state, {
+          items[action.data.id]: {
+            id: action.data.id,
+            title: action.data.title,
+            date: action.data.date,
+            total_polla: action.data.total_polla,
+            players: []
+          }
+        })
+        break;
+        default:
+        return state
+      }
+    }
 
-export function getPartido(state, id) {
-  return state.partidoById[id]
-}
+    function partidoIds(state=[], action) {
+      switch (action.type) {
+        case ADD_PARTIDO:
+        return [ ...state, action.data.id]
+        break
+        default:
+        return state
+      }
+    }*/
+
+
+    export function getPartidos(state) {
+
+      var partidos = state.partidoApp.partidos
+      var list = partidos.ids.map(id=>{
+        return partidos.items[id]
+      })
+           debugger
+      return list
+    }
+
+    /*export function getPartido(state, id) {
+      return state.partidoById[id]
+    }*/

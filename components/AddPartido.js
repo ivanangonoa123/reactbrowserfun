@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react'
+import {findDOMNode} from 'react-dom'
+import { Button, FormGroup, FormControl, ControlLabel, Input } from 'react-bootstrap';
 
 export default class AddPartido extends Component {
   constructor(props){
     super(props)
-    this.handleClick = this.handleClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   setInputValue(val){
@@ -11,31 +13,40 @@ export default class AddPartido extends Component {
   }
 
   getInputvalue() {
-    let values = [this.refs.title.value, this.refs.date.value, this.refs.polla.value]
+    let title = findDOMNode(this.refs.title).value
+    let date = findDOMNode(this.refs.date).value
+    let polla = findDOMNode(this.refs.polla).value
+    let values = [title, date, polla]
     return values
   }
 
-  handleClick() {
+  handleSubmit(e) {
+    e.preventDefault()
     this.props.onFormSubmit(this.getInputvalue())
   }
 
   render() {
     return(
       <div>
+      <form onSubmit={this.handleSubmit}>
+      <FormGroup>
               <h2>Add Partido</h2>
               <div className="item">
-              <label>Title</label>
-              <input type="text" size="45" ref="title"/>
+              <ControlLabel>Title</ControlLabel>
+              <FormControl type="text" size="45" ref="title"/>
               </div>
               <div className="item">
-              <label>Date</label>
-              <input type="text" size="45" ref="date"/>
+              <ControlLabel>Date</ControlLabel>
+              <FormControl type="text" size="45" ref="date"/>
               </div>
               <div className="item">
-              <label>Polla</label>
-              <input type="number" size="45" ref="polla"/>
+              <ControlLabel>Polla</ControlLabel>
+              <FormControl type="number" size="45" ref="polla"/>
               </div>
-              <button onClick={this.handleClick}>Add Partido</button>
+              <br/>
+              <Button type="submit" bsStyle="primary">Add Partido</Button>
+      </FormGroup>
+      </form>
       </div>
     )
 

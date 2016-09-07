@@ -1,27 +1,33 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import PartidoListContainer from './PartidoListContainer'
-import AddPartido from '../components/AddPartido'
-import {addPartido} from '../actions'
-import { Col } from 'react-bootstrap';
+import { Link } from 'react-router'
+import { Grid, Col, Navbar, Nav, NavItem } from 'react-bootstrap';
 
 class App extends Component {
   constructor(props){
     super(props)
-    this.handleFormSubmit = this.handleFormSubmit.bind(this)
-  }
-
-  handleFormSubmit(values) {
-   this.props.storeAddPartido(...values)
   }
 
   render() {
+    const {children} = this.props
     return (
-      <Col xs={4} md={8} lg={4} lgOffset={6} mdOffset={6}>
-      <h2>Futbol</h2>
-        <AddPartido onFormSubmit={this.handleFormSubmit}/>
-        <PartidoListContainer />
-      </Col>
+      <Grid>
+      <Navbar>
+        <Navbar.Header>
+          <Navbar.Brand>
+          <Link to={`/`}>Futbol</Link>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+        <Nav>
+        </Nav>
+        </Navbar.Collapse>
+        </Navbar>
+        <div className="container">
+          {children}
+        </div>
+        </Grid>
     )
   }
 }
@@ -34,9 +40,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    storeAddPartido:(title, date, polla) => {
-      dispatch(addPartido(title, date, polla))
-    }
+
   }
 }
 
